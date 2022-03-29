@@ -2,6 +2,18 @@
 name = "latexclean"
 version = "0.1.0"
 edition = "2021"
+authors = ["Soutrik Bandyopadhyay"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/SoutrikBandyopadhyay/latexclean"
+documentation = "https://github.com/SoutrikBandyopadhyay/latexclean"
+homepage = "https://github.com/SoutrikBandyopadhyay/latexclean"
+description = """
+This binary crate is
+"""
+keywords = ["latex","clean","latex_clean"]
+categories = ["command-line-utilities"]
+
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
