@@ -1,6 +1,21 @@
+use clap::Parser;
 use std::fs;
 use walkdir::WalkDir;
 
+/// This program cleans the directory it runs on for any auxiliary files that latex generates.
+/// The program recursively searches the directory for some known latex extensions and deletes
+/// them. To list all the extensions that would be deleted, run the program with -l or --list flag.
+#[derive(Parser, Debug)]
+#[clap(author, version, about, long_about = None)]
+struct Args {
+    ///Flag to enable verbose output
+    #[clap(long, short)]
+    verbose: bool,
+
+    ///Flag to list all the extensions that would be deleted
+    #[clap(long, short)]
+    list: bool,
+}
 fn main() {
     let folder_to_search = ".";
     let forbidden = [
@@ -23,8 +38,6 @@ fn main() {
         "fdb_latexmk",
         "synctex",
         "synctex(busy)",
-        "synctex.gz",
-        "synctex.gz(busy)",
         "pdfsync",
         "alg",
         "loa",
@@ -48,15 +61,24 @@ fn main() {
         "nls",
     ];
 
-    for entry in WalkDir::new(folder_to_search) {
-        let entry = entry.unwrap();
-        // println!("{}", entry.path().display());
-        // println!("entry.path().extension() = {:#?}", entry.path().extension());
+    let cli = Args::parse();
+    println!("cli.verbose = {:#?}", cli.verbose);
 
-        if let Some(ext) = entry.path().extension() {
-            if forbidden.contains(&ext.to_str().unwrap()) {
-                println!("Removing {}", entry.path().display());
-                fs::remove_file(entry.path()).unwrap()
+    if cli.list {
+        for i in forbidden {
+            println!("{}", i);
+        }
+    } else {
+        for entry in WalkDir::new(folder_to_search) {
+            let entry = entry.unwrap();
+
+            if let Some(ext) = entry.path().extension() {
+                if forbidden.contains(&ext.to_str().unwrap()) {
+                    if cli.verbose {
+                        println!("Removing {}", entry.path().display());
+                    }
+                    fs::remove_file(entry.path()).unwrap()
+                }
             }
         }
     }
