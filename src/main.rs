@@ -62,7 +62,6 @@ fn main() {
     ];
 
     let cli = Args::parse();
-    println!("cli.verbose = {:#?}", cli.verbose);
 
     if cli.list {
         for i in forbidden {
