@@ -63,16 +63,21 @@ fn main() {
 
     let cli = Args::parse();
 
+    // If the user supplied the list flag in the arguments,
+    // List all the extensions to be deleted
     if cli.list {
         for i in forbidden {
             println!("{}", i);
         }
     } else {
+        //Using the WalDir crate to recursively search the files
         for entry in WalkDir::new(folder_to_search) {
             let entry = entry.unwrap();
 
             if let Some(ext) = entry.path().extension() {
                 if forbidden.contains(&ext.to_str().unwrap()) {
+                    // If the user supplied the verbose flag in the arguments,
+                    // Print all the files that are removed
                     if cli.verbose {
                         println!("Removing {}", entry.path().display());
                     }
